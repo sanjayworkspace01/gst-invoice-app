@@ -1,0 +1,54 @@
+# Use official Node image
+FROM node:18-slim
+
+# Install dependencies required by headless Chrome
+RUN apt-get update && apt-get install -y \
+    ca-certificates \
+    fonts-liberation \
+    libasound2 \
+    libatk1.0-0 \
+    libc6 \
+    libcairo2 \
+    libexpat1 \
+    libfontconfig1 \
+    libgcc1 \
+    libglib2.0-0 \
+    libgdk-pixbuf2.0-0 \
+    libnspr4 \
+    libnss3 \
+    libpango-1.0-0 \
+    libx11-6 \
+    libx11-xcb1 \
+    libxcb1 \
+    libxcomposite1 \
+    libxcursor1 \
+    libxdamage1 \
+    libxext6 \
+    libxfixes3 \
+    libxi6 \
+    libxrandr2 \
+    libxrender1 \
+    libxss1 \
+    libxtst6 \
+    wget \
+    gnupg \
+    --no-install-recommends && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
+
+# Copy package files and install deps
+COPY package*.json ./
+RUN npm ci --production
+
+# Copy app source
+COPY . .
+
+# Ensure invoices directory exists
+RUN mkdir -p /app/invoices
+
+# Expose port (Render uses $PORT env)
+ENV PORT=3000
+EXPOSE 3000
+
+# Start the app
+CMD ["node", "server.js"]
