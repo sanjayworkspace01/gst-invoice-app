@@ -1,0 +1,83 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <style>
+    body { font-family: Arial, sans-serif; font-size:12px; color:#222; }
+    .header { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:10px; }
+    .seller { line-height:1.2; }
+    h2 { margin:0 0 4px 0; font-size:16px; }
+    table { width:100%; border-collapse: collapse; margin-top:10px; font-size:12px; }
+    th,td { border:1px solid #ddd; padding:6px; text-align:left; vertical-align:top; }
+    th { background:#f5f5f5; }
+    .right { text-align:right; }
+    .totals { margin-top:10px; width:100%; display:flex; justify-content:flex-end; }
+    .totals div { width:300px; }
+    .small { font-size:10px; color:#555; }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="seller">
+      <h2>{{seller.name}}</h2>
+      <div>{{seller.address}}</div>
+      <div>GSTIN: {{seller.gstin}}</div>
+    </div>
+    <div class="invoice-meta">
+      <strong>Tax Invoice</strong><br/>
+      <div>Invoice: {{invoice_number}}</div>
+      <div>Date: {{date}}</div>
+      <div>Order: {{order_name}}</div>
+    </div>
+  </div>
+
+  <div>
+    <strong>Bill To:</strong><br/>
+    <div>{{buyer.name}}</div>
+    <div class="small">{{buyer.address}}</div>
+    <div class="small">GSTIN: {{buyer.gstin}}</div>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Description</th>
+        <th>HSN</th>
+        <th>Qty</th>
+        <th>Rate</th>
+        <th>Taxable</th>
+        <th>GST %</th>
+        <th>Tax Amt</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each items}}
+      <tr>
+        <td>{{inc @index}}</td>
+        <td>{{title}}</td>
+        <td>{{hsn}}</td>
+        <td class="right">{{quantity}}</td>
+        <td class="right">{{rate}}</td>
+        <td class="right">{{taxable}}</td>
+        <td class="right">{{gst_rate}}</td>
+        <td class="right">{{tax_amount}}</td>
+      </tr>
+      {{/each}}
+    </tbody>
+  </table>
+
+  <div class="totals">
+    <div>
+      <div>Taxable Total: {{totals.taxable}}</div>
+      <div>Total Tax: {{totals.tax}}</div>
+      <div><strong>Invoice Total: {{totals.total}}</strong></div>
+      <div class="small">Place of supply: {{place_of_supply}}</div>
+    </div>
+  </div>
+
+  <div style="margin-top:18px;" class="small">
+    This is a computer generated invoice.
+  </div>
+</body>
+</html>
